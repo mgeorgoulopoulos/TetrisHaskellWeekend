@@ -1,10 +1,18 @@
--- Piece
+-- Tetris Piece module
 
-module Piece (Piece, tetrominoI, tetrominoO, tetrominoS, tetrominoZ) where
+module Piece
+    (
+    Piece, 
+    tetrominoI, tetrominoO, tetrominoS, tetrominoZ,
+    tetrominoT, tetrominoJ, tetrominoL,
+    toAA,
+    pieceCW,
+    pieceCCW
+    ) where
 
 import Data.List(intercalate)
 
--- A Piece will consist of a list of 2-tuples of integers
+-- A Piece will consist of a list of 2-tuples of integers.
 -- The elements of the tuple are x and y coordinates.
 -- There can be negative coordinates and the center of rotation will be (0, 0)
 -- Each cell will have a width and height of '2' in this coordinate system.
@@ -24,8 +32,7 @@ tetrominoL = PieceCoords [(-3,-1),(-1, -1), (1, -1), (1, 1)]
 pieceContains :: (Int, Int) -> Piece -> Bool
 pieceContains c (PieceCoords cs) = elem c cs
 
--- Coordinate representation isn't good for debugging.
--- So, let's create a function to convert to ascii-art string.
+-- Converts a piece to an ascii-art string
 toAA :: Piece -> String
 toAA piece = intercalate "\n" lines
     where lines = map rowToString [3,1,-1,-3]
@@ -33,13 +40,15 @@ toAA piece = intercalate "\n" lines
                     where colToString col | pieceContains (col, row) piece = "*"
                                           | otherwise                      = "."
 
--- Now, let's try to create rotation functions for clockwise & andticlockwise rotation:
+-- Piece clockwise rotation
 pieceCW :: Piece -> Piece
 pieceCW (PieceCoords cs) = PieceCoords (map rotateCW cs)
     where rotateCW (a,b) = (b,-a)
 
--- It's better without the lambda
-
+-- Piece counter-clockwise rotation
 pieceCCW :: Piece -> Piece
 pieceCCW (PieceCoords cs) = PieceCoords (map rotateCCW cs)
     where rotateCCW (a,b) = (-b,a)
+	
+-- A lot of functionality has been covered until now, and only in 50 lines of code!
+-- The rotation functions are almost too elegant to be true!
