@@ -2,6 +2,8 @@
 
 module Piece (Piece, tetrominoI) where
 
+import Data.List(intercalate)
+
 -- A Piece will consist of a list of 2-tuples of integers
 -- The elements of the tuple are x and y coordinates.
 -- There can be negative coordinates and the center of rotation will be (0, 0)
@@ -19,5 +21,32 @@ data Piece = PieceCoords [(Int, Int)] deriving (Show)
 --   +--+--+--+--+
 
 tetrominoI = PieceCoords [(-3, -1), (-1, -1), (1, -1), (3, -1)]
+
+-- Checks if a piece contains the given coordinate
+pieceContains :: (Int, Int) -> Piece -> Bool
+pieceContains c (PieceCoords cs) = elem c cs
+
+-- Coordinate representation isn't good for debugging.
+-- So, let's create a function to convert to ascii-art string.
+
+-- This is how I'll begin writing the function. I'm really tempted to go botoom-up.
+-- But I'm going to build the function from top to bottom, using stubs as I go.
+toAA :: Piece -> String
+toAA piece = intercalate "\n" lines
+    where lines = ["    ", "    ", "****", "    "]
+	-- So now, we have reduced the problem to creating the lines of the AA string
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
