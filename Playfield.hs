@@ -2,6 +2,8 @@
 
 module Playfield () where
 
+import Data.List
+
 
 -- First, we start by defining the Cell type
 -- This is a rectangle on-screen. For now, it can either be filled, or empty
@@ -28,4 +30,11 @@ data Well = WellOfRows [Row]
 -- Creates an empty Well
 emptyWell = WellOfRows (replicate 22 emptyRow)
 
--- Our playfield will be stored differently, partially as an exercise and partially to be able to store the rendered pieces with different colours in the playfield
+-- Again, we need a way to visualize the playfield, so let's create a function that renders it as ascii-art:
+toAA :: Well -> String
+toAA (WellOfRows rs) = intercalate "\n" (map rowToString rs)
+    where rowToString (RowOfCells cs) = map cellToChar cs
+            where cellToChar cell | cell == Empty = '.'
+                                  | otherwise     = '*'
+
+-- That was easier than the Piece's: the mappings are 1:1 from Cell->Char . Equally elegant!
