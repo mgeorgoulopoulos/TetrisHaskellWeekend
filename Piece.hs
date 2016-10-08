@@ -33,4 +33,8 @@ toAA piece = intercalate "\n" lines
                     where colToString col | pieceContains (col, row) piece = "*"
                                           | otherwise                      = "."
 
+-- Now, let's try to create rotation functions for clockwise & andticlockwise rotation:
+pieceCW :: Piece -> Piece
+pieceCW (PieceCoords cs) = PieceCoords (map (\(a, b) -> (b, -a)) cs)
 
+-- The job here is done by the lambda (\...) , which takes a (a,b) coordinate and transforms it to (b,-a)
