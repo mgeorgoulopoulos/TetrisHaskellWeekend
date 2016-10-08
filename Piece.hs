@@ -28,13 +28,12 @@ pieceContains c (PieceCoords cs) = elem c cs
 
 -- Coordinate representation isn't good for debugging.
 -- So, let's create a function to convert to ascii-art string.
-
--- This is how I'll begin writing the function. I'm really tempted to go botoom-up.
--- But I'm going to build the function from top to bottom, using stubs as I go.
 toAA :: Piece -> String
 toAA piece = intercalate "\n" lines
-    where lines = ["    ", "    ", "****", "    "]
-	-- So now, we have reduced the problem to creating the lines of the AA string
+    where lines = map rowToString [-3,-1,1,3]
+            where rowToString row | row == (-1) = "****"
+                                  | otherwise   = "    "
+        -- This will achieve the same result
 
 
 
