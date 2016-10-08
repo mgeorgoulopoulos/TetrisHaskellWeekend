@@ -11,39 +11,13 @@ import Data.List(intercalate)
 -- This way, the cell (1, 0) and (-1, 0) will be adjacent (distance is 1 - (-1) = 2
 data Piece = PieceCoords [(Int, Int)] deriving (Show)
 
+-- Piece definitions
 tetrominoI = PieceCoords [(-3, -1), (-1, -1), (1, -1), (3, -1)]
 tetrominoO = PieceCoords [(-1, -1), (1, -1), (-1, 1), (1, 1)]
 tetrominoS = PieceCoords [(-1, -1), (1, -1), (1, 1), (3,1)]
 tetrominoZ = PieceCoords [(-1, -1), (1, -1), (-3,1), (-1, 1)]
-
---    Tetromino: T
---   --------------
---    -3 -1 +1 +3
---   +--+--+--+--+
--- +1|  |  |XX|  |
---   +--+--0--+--+
--- -1|  |XX|XX|XX|
---   +--+--+--+--+
 tetrominoT = PieceCoords [(-1, -1), (1, -1), (3,-1), (1, 1)]
-
---    Tetromino: J
---   --------------
---    -3 -1 +1 +3
---   +--+--+--+--+
--- +1|  |XX|  |  |
---   +--+--0--+--+
--- -1|  |XX|XX|XX|
---   +--+--+--+--+
 tetrominoJ = PieceCoords [(-1, -1), (1, -1), (3,-1), (-1, 1)]
-
---    Tetromino: L
---   --------------
---    -3 -1 +1 +3
---   +--+--+--+--+
--- +1|  |  |XX|  |
---   +--+--0--+--+
--- -1|XX|XX|XX|  |
---   +--+--+--+--+
 tetrominoL = PieceCoords [(-3,-1),(-1, -1), (1, -1), (1, 1)]
 
 -- Checks if a piece contains the given coordinate
