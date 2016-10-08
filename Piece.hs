@@ -30,11 +30,13 @@ pieceContains c (PieceCoords cs) = elem c cs
 -- So, let's create a function to convert to ascii-art string.
 toAA :: Piece -> String
 toAA piece = intercalate "\n" lines
-    where lines = map rowToString [-3,-1,1,3]
-            where rowToString row | row == (-1) = "****"
-                                  | otherwise   = "    "
-        -- This will achieve the same result
-
+    where lines = map rowToString [3,1,-1,-3]
+            where rowToString row = concat (map colToString [-3,-1,1,3])
+                    where colToString col | row == (-1) = "*"
+                                          | otherwise = "'"
+        
+-- This is the same but we are now working in the cell level
+-- It is obvious how to proceed
 
 
 
