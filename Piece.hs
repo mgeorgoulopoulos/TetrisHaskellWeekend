@@ -35,6 +35,11 @@ toAA piece = intercalate "\n" lines
 
 -- Now, let's try to create rotation functions for clockwise & andticlockwise rotation:
 pieceCW :: Piece -> Piece
-pieceCW (PieceCoords cs) = PieceCoords (map (\(a, b) -> (b, -a)) cs)
+pieceCW (PieceCoords cs) = PieceCoords (map rotateCW cs)
+    where rotateCW (a,b) = (b,-a)
 
--- The job here is done by the lambda (\...) , which takes a (a,b) coordinate and transforms it to (b,-a)
+-- It's better without the lambda
+
+pieceCCW :: Piece -> Piece
+pieceCCW (PieceCoords cs) = PieceCoords (map rotateCCW cs)
+    where rotateCCW (a,b) = (-b,a)
