@@ -1,6 +1,6 @@
 -- Piece
 
-module Piece (Piece, tetrominoI) where
+module Piece (Piece, tetrominoI, tetrominoO, tetrominoS, tetrominoZ) where
 
 import Data.List(intercalate)
 
@@ -11,16 +11,38 @@ import Data.List(intercalate)
 -- This way, the cell (1, 0) and (-1, 0) will be adjacent (distance is 1 - (-1) = 2
 data Piece = PieceCoords [(Int, Int)] deriving (Show)
 
---    Tetromino: I
+tetrominoI = PieceCoords [(-3, -1), (-1, -1), (1, -1), (3, -1)]
+
+-- Now, let us define the remaining pieces:
+--    Tetromino: O
 --   --------------
 --    -3 -1 +1 +3
 --   +--+--+--+--+
--- +1|  |  |  |  |
+-- +1|  |XX|XX|  |
 --   +--+--0--+--+
--- -1|XX|XX|XX|XX|
+-- -1|  |XX|XX|  |
 --   +--+--+--+--+
+tetrominoO = PieceCoords [(-1, -1), (1, -1), (-1, 1), (1, 1)]
 
-tetrominoI = PieceCoords [(-3, -1), (-1, -1), (1, -1), (3, -1)]
+--    Tetromino: S
+--   --------------
+--    -3 -1 +1 +3
+--   +--+--+--+--+
+-- +1|  |  |XX|XX|
+--   +--+--0--+--+
+-- -1|  |XX|XX|  |
+--   +--+--+--+--+
+tetrominoS = PieceCoords [(-1, -1), (1, -1), (1, 1), (3,1)]
+
+--    Tetromino: Z
+--   --------------
+--    -3 -1 +1 +3
+--   +--+--+--+--+
+-- +1|XX|XX|  |  |
+--   +--+--0--+--+
+-- -1|  |XX|XX|  |
+--   +--+--+--+--+
+tetrominoZ = PieceCoords [(-1, -1), (1, -1), (-3,1), (-1, 1)]
 
 -- Checks if a piece contains the given coordinate
 pieceContains :: (Int, Int) -> Piece -> Bool
@@ -36,4 +58,3 @@ toAA piece = intercalate "\n" lines
                                           | otherwise                      = "."
 
 
--- This is a bit exaggerated, to get used to 'where'. 
