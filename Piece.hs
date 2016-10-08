@@ -12,37 +12,39 @@ import Data.List(intercalate)
 data Piece = PieceCoords [(Int, Int)] deriving (Show)
 
 tetrominoI = PieceCoords [(-3, -1), (-1, -1), (1, -1), (3, -1)]
-
--- Now, let us define the remaining pieces:
---    Tetromino: O
---   --------------
---    -3 -1 +1 +3
---   +--+--+--+--+
--- +1|  |XX|XX|  |
---   +--+--0--+--+
--- -1|  |XX|XX|  |
---   +--+--+--+--+
 tetrominoO = PieceCoords [(-1, -1), (1, -1), (-1, 1), (1, 1)]
-
---    Tetromino: S
---   --------------
---    -3 -1 +1 +3
---   +--+--+--+--+
--- +1|  |  |XX|XX|
---   +--+--0--+--+
--- -1|  |XX|XX|  |
---   +--+--+--+--+
 tetrominoS = PieceCoords [(-1, -1), (1, -1), (1, 1), (3,1)]
+tetrominoZ = PieceCoords [(-1, -1), (1, -1), (-3,1), (-1, 1)]
 
---    Tetromino: Z
+--    Tetromino: T
 --   --------------
 --    -3 -1 +1 +3
 --   +--+--+--+--+
--- +1|XX|XX|  |  |
+-- +1|  |  |XX|  |
 --   +--+--0--+--+
--- -1|  |XX|XX|  |
+-- -1|  |XX|XX|XX|
 --   +--+--+--+--+
-tetrominoZ = PieceCoords [(-1, -1), (1, -1), (-3,1), (-1, 1)]
+tetrominoT = PieceCoords [(-1, -1), (1, -1), (3,-1), (1, 1)]
+
+--    Tetromino: J
+--   --------------
+--    -3 -1 +1 +3
+--   +--+--+--+--+
+-- +1|  |XX|  |  |
+--   +--+--0--+--+
+-- -1|  |XX|XX|XX|
+--   +--+--+--+--+
+tetrominoJ = PieceCoords [(-1, -1), (1, -1), (3,-1), (-1, 1)]
+
+--    Tetromino: L
+--   --------------
+--    -3 -1 +1 +3
+--   +--+--+--+--+
+-- +1|  |  |XX|  |
+--   +--+--0--+--+
+-- -1|XX|XX|XX|  |
+--   +--+--+--+--+
+tetrominoL = PieceCoords [(-3,-1),(-1, -1), (1, -1), (1, 1)]
 
 -- Checks if a piece contains the given coordinate
 pieceContains :: (Int, Int) -> Piece -> Bool
