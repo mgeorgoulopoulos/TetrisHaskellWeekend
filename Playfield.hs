@@ -5,6 +5,8 @@ module Playfield () where
 import Data.List
 import Piece
 
+import Graphics.Gloss
+
 -- A cell is a rectangle in the playfield - it can either be full or empty
 data Cell = Empty | Full deriving (Show, Eq)
 
