@@ -1,6 +1,6 @@
 -- Playfield
 
-module Playfield (Well, emptyWell, numberRows, numberCells) where
+module Playfield (Well, Cell(..), emptyWell, numberRows, numberCells, coordCells, renderPiece) where
 
 import Data.List
 import Piece
@@ -48,6 +48,14 @@ numberRows (WellOfRows rs) = zip [1,-1..(-41)] rs
 
 numberCells :: Row -> [(Int, Cell)]
 numberCells (RowOfCells cs) = zip [-9,-7..9] cs
+                                  
+-- This one will create a 3-tuple of the cell and its coordinates (x,y,cell)
+-- It's going to be more convenient for the rendering module to just use these 3-tuples instead of manually unfolding the well
+coordCells :: Well -> [(Int, Int, Cell)]
+coordCells w = concat (map extractCells (numberRows w))
+  where
+    extractCells (y, cs) = map extractCell (numberCells cs)
+      where extractCell (x, c) = (x, y, c)
                                   
 -- Renders a piece in the Well
 renderPiece :: Piece -> (Int, Int) -> Well -> Well

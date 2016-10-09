@@ -3,6 +3,7 @@
 module Renderer(render) where
 
 import State
+import Playfield
 import Graphics.Gloss
 
 -- Let's start with rendering an empty well.
@@ -20,9 +21,7 @@ wallHeight = wellHeight + 2 * padding
 -- Colors
 wellColor = black
 wallColor = dark (dark blue)
-
--- Now, before rendering the cells, we need to map from our coordinate system to the one used by gloss
--- So, let's create a mapping function to do that:
+cellColor = magenta
 
 -- Convert from playfield coordinate to screen coordinate
 playfieldToScreen :: (Int, Int) -> (Int, Int)
@@ -31,16 +30,33 @@ playfieldToScreen (px, py) = (sx, sy) where
   sy = (11 * cellSize) + (py * cellSize) `quot` 2
 
 
+-- Now, let's create a function that will render our well to a "Picture"
+
+renderWell :: Well -> Picture
+renderWell well = 
+  pictures (map cellToPicture (coordCells well))
+    where
+      cellToPicture (px,py,c)
+        | py > (-3) = pictures []
+        | c /= Full = pictures []
+        | otherwise = translate (fromIntegral sx) (fromIntegral sy) (color cellColor (rectangleSolid (fromIntegral cellSize) (fromIntegral cellSize)))
+                        where
+                          sx = fst transformed
+                          sy = snd transformed
+                          transformed = playfieldToScreen (px, py)
+        
+
 render :: State -> Picture
 render gameState = pictures
   [ walls
-  , well
+  , playfield
   , activePiece
   ]
-  where -- using fromIntegral to convert our integers to Float that gloss requires
+  where
     walls = color wallColor (rectangleSolid (fromIntegral wallWidth) (fromIntegral wallHeight))
-    well = pictures 
+    playfield = pictures 
       [ color wellColor (rectangleSolid (fromIntegral wellWidth) (fromIntegral wellHeight))
+      , renderWell (well gameState)
       ]
     activePiece = pictures []
     
