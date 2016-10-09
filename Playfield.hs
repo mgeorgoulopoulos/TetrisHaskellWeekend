@@ -1,6 +1,6 @@
 -- Playfield
 
-module Playfield () where
+module Playfield (Well, emptyWell) where
 
 import Data.List
 import Piece

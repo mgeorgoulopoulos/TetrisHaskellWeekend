@@ -5,11 +5,32 @@ module Renderer(render) where
 import State
 import Graphics.Gloss
 
+-- Let's start with rendering an empty well.
+
+-- Playfield dimensions
+cellSize = 35
+padding = (768 - (20 * cellSize)) / 2
+
+wellWidth = 10 * cellSize
+wellHeight = 20 * cellSize -- We're not rendering the invisible rows
+
+wallWidth = wellWidth + 2 * padding
+wallHeight = wellHeight + 2 * padding
+
+-- Colors
+wellColor = black
+wallColor = dark (dark blue)
+
 render :: State -> Picture
-render _ =   pictures
-  [ translate (-20) (-100) $ color ballColor $ circleSolid 30 
-  , translate 30 50 $ color paddleColor $ rectangleSolid 10 50
+render gameState =   pictures
+  [ walls
+  , well
+  , activePiece
   ]
   where
-    ballColor = dark green
-    paddleColor = light (light blue)
+    walls = color wallColor (rectangleSolid wallWidth wallHeight)
+    well = pictures 
+      [ color wellColor (rectangleSolid wellWidth wellHeight)
+      ]
+    activePiece = pictures []
+    
