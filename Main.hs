@@ -2,14 +2,14 @@ module Main(main) where
 
 import Graphics.Gloss
 
+import State
+import Renderer
+
 window :: Display
-window = InWindow "Nice Window" (200, 200) (10, 10)
+window = InWindow "Nice Window" (1280, 768) (200, 200)
 
 background :: Color
-background = white
-
-drawing :: Picture
-drawing = circle 80
-
+background = black
+    
 main :: IO ()
-main = display window background drawing
+main = display window background (render State)
