@@ -12,7 +12,7 @@ import System.Random
 
 -- Piece falling velocity, in cells/second
 pieceVelocity :: Float
-pieceVelocity = 1.5
+pieceVelocity = 15.5
 
 -- Time to wait before dropping piece again
 piecePeriod :: Float
@@ -46,16 +46,16 @@ applyMove s
 
 -- Fixes the falling piece to its current position and resets the piece to a new one
 fixPiece :: State -> State
-fixPiece s = s
-  { well = renderPiece (piece s) (piecePos s) (well s)
-  , piece = randomPiece (fst reseed)
-  , piecePos = (0, 0)
-  , randomSeed = snd reseed
-  }
-    where
-      reseed :: (Double, StdGen)
-      reseed = randomR (0.0, 1.0) (randomSeed s)
-
-
+fixPiece s
+  | ((snd (piecePos s)) > (-2)) = resetGameState s -- reset game state when 'fixing' a piece that overflows the well
+  | otherwise     = s
+    { well = renderPiece (piece s) (piecePos s) (well s)
+    , piece = randomPiece (fst reseed)
+    , piecePos = (0, 0)
+    , randomSeed = snd reseed
+    }
+      where
+        reseed :: (Double, StdGen)
+        reseed = randomR (0.0, 1.0) (randomSeed s)
 
 

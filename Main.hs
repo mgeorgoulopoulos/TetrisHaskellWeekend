@@ -17,4 +17,4 @@ fps = 60
 main :: IO ()
 main = do
   seed <- newStdGen
-  play window background fps (initialGameState seed) render handleEvent updateGameState
+  play window background fps initialGameState render handleEvent updateGameState

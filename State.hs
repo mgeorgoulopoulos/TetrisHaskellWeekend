@@ -1,6 +1,6 @@
 -- Game State
 
-module State(State(..), initialGameState) where
+module State(State(..), initialGameState, resetGameState) where
 
 import Playfield
 import Piece
@@ -16,13 +16,17 @@ data State = State
     , randomSeed :: StdGen
     } deriving (Show)
 
-initialGameState :: StdGen -> State
-initialGameState seed = State
+initialGameState :: State
+initialGameState = State
     { well = emptyWell
     , time = 0
     , deltaTime = 0
     , secondsToNextMove = 0
     , piece = tetrominoO
     , piecePos = (0, 0)
-    , randomSeed = seed
+    , randomSeed = mkStdGen 0 -- found better way!
     }
+    
+-- Resets a game state, maintaining the random seed
+resetGameState :: State -> State
+resetGameState s = initialGameState {randomSeed = (randomSeed s)}
