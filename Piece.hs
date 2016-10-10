@@ -11,6 +11,7 @@ module Piece
     pieceCCW,
     validPos,
     randomPiece
+    , pieceColor
     ) where
 
 import Data.List(intercalate)
@@ -71,3 +72,7 @@ randomPiece r = case ((truncate(r * 1000)) `mod` 7) of -- I only found randomR i
   4 -> tetrominoT
   5 -> tetrominoJ
   6 -> tetrominoL
+
+-- returns the color of the piece
+pieceColor :: Piece -> Color
+pieceColor (PieceCoords _ col) = col

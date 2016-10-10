@@ -12,13 +12,12 @@ module Playfield
   , clearAndCountFilledRows
   ) where
 
-import Data.List
 import Piece
-
+import Data.List
 import Graphics.Gloss
 
 -- A cell is a rectangle in the playfield - it can either be full or empty
-data Cell = Empty | Full deriving (Show, Eq)
+data Cell = Empty | FilledWith Color deriving (Show, Eq)
 
 -- Row of cells
 data Row = RowOfCells [Cell] deriving (Show)
@@ -75,7 +74,7 @@ renderPiece piece (pX, pY) well
     where renderRow (y, row) = RowOfCells (map renderCell (numberCells row))
             where renderCell (x, c) 
                     | c /= Empty                        = c
-                    | pieceContains (x-pX, y-pY) piece  = Full
+                    | pieceContains (x-pX, y-pY) piece  = FilledWith (pieceColor piece)
                     | otherwise                         = Empty
             
 -- Because I'm extremely lazy, I'm going to implement collision detection based on the renderPiece function I have already
