@@ -5,6 +5,7 @@ import Graphics.Gloss
 import State
 import Renderer
 import Logic
+import System.Random
 
 window :: Display
 window = InWindow "Nice Window" (1280, 768) (200, 200)
@@ -14,4 +15,6 @@ background = black
 fps = 60
     
 main :: IO ()
-main = play window background fps initialGameState render handleEvent updateGameState
+main = do
+  seed <- newStdGen
+  play window background fps (initialGameState seed) render handleEvent updateGameState

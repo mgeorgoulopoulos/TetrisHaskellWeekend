@@ -8,6 +8,7 @@ import Piece
 import Playfield
 import Graphics.Gloss
 import Graphics.Gloss.Interface.Pure.Game -- for Event
+import System.Random
 
 -- Piece falling velocity, in cells/second
 pieceVelocity :: Float
@@ -47,9 +48,13 @@ applyMove s
 fixPiece :: State -> State
 fixPiece s = s
   { well = renderPiece (piece s) (piecePos s) (well s)
-  , piece = tetrominoO
+  , piece = randomPiece (fst reseed)
   , piecePos = (0, 0)
+  , randomSeed = snd reseed
   }
+    where
+      reseed :: (Double, StdGen)
+      reseed = randomR (0.0, 1.0) (randomSeed s)
 
 
 

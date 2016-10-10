@@ -9,7 +9,8 @@ module Piece
     pieceToAA,
     pieceCW,
     pieceCCW,
-    validPos
+    validPos,
+	randomPiece
     ) where
 
 import Data.List(intercalate)
@@ -59,8 +60,13 @@ validPos (x, y) (PieceCoords cs) = and (map validCoord cs)
            (px + x >= -9) && (px + x <= 9) &&
            (py + y <= 1) && (py + y >= -41)
 
-
-
-
-
-
+-- Converts random integer to piece
+randomPiece :: Double -> Piece
+randomPiece r = case ((truncate(r * 1000)) `mod` 7) of -- I only found randomR in stackOverflow and I won't be bothered to search for integer randms. This is a tiny part of a part of what I want to do here. I should have been able to find something in the first 3 google results or so.
+  0 -> tetrominoI
+  1 -> tetrominoO
+  2 -> tetrominoS
+  3 -> tetrominoZ
+  4 -> tetrominoT
+  5 -> tetrominoJ
+  6 -> tetrominoL
