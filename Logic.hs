@@ -19,7 +19,17 @@ piecePeriod :: Float
 piecePeriod = 1.0 / pieceVelocity
 
 handleEvent :: Event -> State -> State
+handleEvent (EventKey (SpecialKey KeyLeft) Down _ _) s = movePiece (-2) s
+handleEvent (EventKey (SpecialKey KeyRight) Down _ _) s = movePiece 2 s
 handleEvent _ s = s
+
+-- Moves the falling piece horizontally, if possible
+movePiece :: Int -> State -> State
+movePiece offset s
+  | canPieceBeAt (piece s) piecePos' (well s) = s {piecePos = piecePos'}
+  | otherwise = s
+    where
+      piecePos' = (fst (piecePos s) + offset, snd (piecePos s))
 
 -- Update function passed to gloss
 updateGameState :: Float -> State -> State
@@ -32,17 +42,22 @@ unityStyleUpdate s
   | otherwise                                     = stateWithUpdatedClocks
     where
       stateWithUpdatedClocks = s {secondsToNextMove = (secondsToNextMove s) - (deltaTime s)}
-  
+
+-- Refactored from applyMove. We also needed it to move left-right and rotate a piece
+canPieceBeAt :: Piece -> (Int, Int) -> Well -> Bool
+canPieceBeAt piece coord well = insidePlayfield && (not colliding)
+  where
+    insidePlayfield = validPos coord piece
+    colliding = pieceCollides piece coord well
+
 -- Moves the current piece one cell down
 applyMove :: State -> State
 applyMove s
-  | pieceReachedFloor = fixPiece s 
-  | pieceCollided     = fixPiece s 
+  | nextPosInvalid    = fixPiece s 
   | otherwise         = s {piecePos = piecePos'}
     where
-      pieceReachedFloor = validPos piecePos' (piece s) == False
-      pieceCollided = pieceCollides (piece s) piecePos' (well s)
-      piecePos' = (fst (piecePos s), snd (piecePos s) - 2) -- cell is 2 units
+      nextPosInvalid = not (canPieceBeAt (piece s) piecePos' (well s))
+      piecePos' = (fst (piecePos s), snd (piecePos s) - 2)
 
 -- Fixes the falling piece to its current position and resets the piece to a new one
 fixPiece :: State -> State
