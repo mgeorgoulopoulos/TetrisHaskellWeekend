@@ -57,7 +57,7 @@ render gameState = pictures [ walls, playfield, activePiece, guiStuff ]
       [ color wellColor (rectangleSolid (fromIntegral wellWidth) (fromIntegral wellHeight))
       , renderWell (well gameState)
       ]
-    activePiece = renderWell (renderPiece (piece gameState) (piecePos gameState) emptyWell) -- render the piece the lazy way!
+    activePiece = renderWell (renderPiece (piece gameState) (piecePos gameState) emptyWell)
     guiStuff = translate (-600.0) (200.0) (scale 0.4 0.4 (pictures [playerScore]))
       where
         playerScore = color white (Text scoreText)

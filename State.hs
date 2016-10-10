@@ -15,6 +15,7 @@ data State = State
     , piecePos :: (Int, Int)
     , randomSeed :: StdGen
     , score :: Int
+    , accelerate :: Bool
     } deriving (Show)
 
 initialGameState :: State
@@ -27,6 +28,7 @@ initialGameState = State
     , piecePos = (0, 0)
     , randomSeed = mkStdGen 0 -- found better way!
     , score = 0
+    , accelerate = False
     }
     
 -- Resets a game state, maintaining the random seed

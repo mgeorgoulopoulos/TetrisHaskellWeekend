@@ -14,13 +14,21 @@ import System.Random
 pieceVelocity :: Float
 pieceVelocity = 10
 
+acceleratedPieceVelocity :: Float
+acceleratedPieceVelocity = 30
+
+effectivePieceVelocity :: State -> Float
+effectivePieceVelocity s | accelerate s = acceleratedPieceVelocity | otherwise = pieceVelocity
+
 -- Time to wait before dropping piece again
-piecePeriod :: Float
-piecePeriod = 1.0 / pieceVelocity
+effectivePiecePeriod :: State -> Float
+effectivePiecePeriod s = 1.0 / (effectivePieceVelocity s)
 
 handleEvent :: Event -> State -> State
 handleEvent (EventKey (SpecialKey KeyLeft) Down _ _) s = movePiece (-2) s
 handleEvent (EventKey (SpecialKey KeyRight) Down _ _) s = movePiece 2 s
+handleEvent (EventKey (SpecialKey KeyDown) Down _ _) s = s {accelerate = True}
+handleEvent (EventKey (SpecialKey KeyDown) Up _ _) s = s {accelerate = False}
 handleEvent (EventKey (Char 'a') Down _ _) s = rotateCW s
 handleEvent (EventKey (Char 's') Down _ _) s = rotateCCW s
 handleEvent _ s = s
@@ -53,7 +61,7 @@ updateGameState t s = unityStyleUpdate (s {time = (time s + t), deltaTime = t}) 
 -- my update function
 unityStyleUpdate :: State -> State
 unityStyleUpdate s
-  | secondsToNextMove stateWithUpdatedClocks <= 0 = applyMove stateWithUpdatedClocks {secondsToNextMove = piecePeriod}
+  | secondsToNextMove stateWithUpdatedClocks <= 0 = applyMove stateWithUpdatedClocks {secondsToNextMove = effectivePiecePeriod s}
   | otherwise                                     = stateWithUpdatedClocks
     where
       stateWithUpdatedClocks = s {secondsToNextMove = (secondsToNextMove s) - (deltaTime s)}
@@ -83,6 +91,7 @@ fixPiece s
     , piece = randomPiece (fst reseed)
     , piecePos = (0, 0)
     , randomSeed = snd reseed
+    , accelerate = False -- We don't want acceleration to affect next falling piece
     }
       where
         reseed :: (Double, StdGen)
