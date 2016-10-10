@@ -1,6 +1,15 @@
 -- Playfield
 
-module Playfield (Well, Cell(..), emptyWell, numberRows, numberCells, coordCells, renderPiece) where
+module Playfield
+  ( Well
+  , Cell(..)
+  , emptyWell
+  , numberRows
+  , numberCells
+  , coordCells
+  , renderPiece
+  , pieceCollides
+  ) where
 
 import Data.List
 import Piece

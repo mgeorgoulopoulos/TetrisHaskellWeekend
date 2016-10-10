@@ -9,7 +9,7 @@ module Piece
     pieceToAA,
     pieceCW,
     pieceCCW,
-	validPos
+    validPos
     ) where
 
 import Data.List(intercalate)
@@ -56,8 +56,8 @@ pieceCCW (PieceCoords cs) = PieceCoords (map rotateCCW cs)
 validPos :: (Int, Int) -> Piece -> Bool
 validPos (x, y) (PieceCoords cs) = and (map validCoord cs)
   where validCoord (px, py) = 
-           (px + x >= -9) && (px + x <= 9)
-		&& (py + y <= 1) && (py + y >= -41)
+           (px + x >= -9) && (px + x <= 9) &&
+           (py + y <= 1) && (py + y >= -41)
 
 
 

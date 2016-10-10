@@ -22,12 +22,12 @@ handleEvent _ s = s
 
 -- Update function passed to gloss
 updateGameState :: Float -> State -> State
-updateGameState t s = unityStyleUpdate (s {time = t, deltaTime = t - (time s)})
+updateGameState t s = unityStyleUpdate (s {time = (time s + t), deltaTime = t}) -- ok, after all gloss passes dt to us
 
 -- my update function
 unityStyleUpdate :: State -> State
 unityStyleUpdate s
-  | secondsToNextMove stateWithUpdatedClocks <= 0 = applyMove stateWithUpdatedClocks
+  | secondsToNextMove stateWithUpdatedClocks <= 0 = applyMove stateWithUpdatedClocks {secondsToNextMove = piecePeriod}
   | otherwise                                     = stateWithUpdatedClocks
     where
       stateWithUpdatedClocks = s {secondsToNextMove = (secondsToNextMove s) - (deltaTime s)}
@@ -35,9 +35,12 @@ unityStyleUpdate s
 -- Moves the current piece one cell down
 applyMove :: State -> State
 applyMove s
-  | validPos piecePos' (piece s) == False = fixPiece s 
-  | otherwise                             = s {piecePos = piecePos'}
+  | pieceReachedFloor = fixPiece s 
+  | pieceCollided     = fixPiece s 
+  | otherwise         = s {piecePos = piecePos'}
     where
+      pieceReachedFloor = validPos piecePos' (piece s) == False
+      pieceCollided = pieceCollides (piece s) piecePos' (well s)
       piecePos' = (fst (piecePos s), snd (piecePos s) - 2) -- cell is 2 units
 
 -- Fixes the falling piece to its current position and resets the piece to a new one
