@@ -68,7 +68,16 @@ renderPiece piece (pX, pY) well
                     | pieceContains (x-pX, y-pY) piece  = Full
                     | otherwise                         = Empty
             
-            
+-- Because I'm extremely lazy, I'm going to implement collision detection based on the renderPiece function I have already
+-- First, I'll render a piece in an enpty well
+-- Then, all that is needed is a function that compares two wells cell by cell
+pieceCollides :: Piece -> (Int, Int) -> Well -> Bool
+pieceCollides piece piecePos well = wellsCollide rendered well
+  where
+    rendered = renderPiece piece piecePos emptyWell
+    wellsCollide (WellOfRows rs1) (WellOfRows rs2) = or (map rowsCollide (zip rs1 rs2))
+    rowsCollide (RowOfCells cs1, RowOfCells cs2) = or (map cellsCollide (zip cs1 cs2))
+    cellsCollide (a, b) = (a /= Empty) && (b /= Empty)
             
             
             
