@@ -9,6 +9,7 @@ module Playfield
   , coordCells
   , renderPiece
   , pieceCollides
+  , clearAndCountFilledRows
   ) where
 
 import Data.List
@@ -89,7 +90,17 @@ pieceCollides piece piecePos well = wellsCollide rendered well
     cellsCollide (a, b) = (a /= Empty) && (b /= Empty)
             
             
-            
+-- Clears a well of its filled rows and returns the filled row count
+clearAndCountFilledRows :: Well -> (Well, Int)
+clearAndCountFilledRows (WellOfRows rs) = (well', count)
+  where
+    well' = WellOfRows (asManyClear ++ remaining)
+    remaining = filter notFull rs
+    count :: Int
+    count = (length rs) - (length remaining)
+    asManyClear :: [Row]
+    asManyClear = replicate count emptyRow
+    notFull (RowOfCells cs) = not (and (map (\c -> c /= Empty) cs))
             
             
             

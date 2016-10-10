@@ -50,7 +50,7 @@ renderWell well =
 
 -- Game State renderer
 render :: State -> Picture
-render gameState = pictures [ walls, playfield, activePiece, debugStuff ]
+render gameState = pictures [ walls, playfield, activePiece, guiStuff ]
   where
     walls = color wallColor (rectangleSolid (fromIntegral wallWidth) (fromIntegral wallHeight))
     playfield = pictures 
@@ -58,7 +58,8 @@ render gameState = pictures [ walls, playfield, activePiece, debugStuff ]
       , renderWell (well gameState)
       ]
     activePiece = renderWell (renderPiece (piece gameState) (piecePos gameState) emptyWell) -- render the piece the lazy way!
-    debugStuff = translate (-500.0) (200.0) (scale 0.2 0.2 (pictures [gameTime]))
+    guiStuff = translate (-600.0) (200.0) (scale 0.4 0.4 (pictures [playerScore]))
       where
-        gameTime = color white (Text (show (time gameState)))
+        playerScore = color white (Text scoreText)
+        scoreText = "SCORE: " ++ (show (score gameState))
     

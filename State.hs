@@ -14,6 +14,7 @@ data State = State
     , piece :: Piece
     , piecePos :: (Int, Int)
     , randomSeed :: StdGen
+    , score :: Int
     } deriving (Show)
 
 initialGameState :: State
@@ -25,6 +26,7 @@ initialGameState = State
     , piece = tetrominoO
     , piecePos = (0, 0)
     , randomSeed = mkStdGen 0 -- found better way!
+    , score = 0
     }
     
 -- Resets a game state, maintaining the random seed

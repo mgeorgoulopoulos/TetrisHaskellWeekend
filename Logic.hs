@@ -12,7 +12,7 @@ import System.Random
 
 -- Piece falling velocity, in cells/second
 pieceVelocity :: Float
-pieceVelocity = 15.5
+pieceVelocity = 10
 
 -- Time to wait before dropping piece again
 piecePeriod :: Float
@@ -21,6 +21,8 @@ piecePeriod = 1.0 / pieceVelocity
 handleEvent :: Event -> State -> State
 handleEvent (EventKey (SpecialKey KeyLeft) Down _ _) s = movePiece (-2) s
 handleEvent (EventKey (SpecialKey KeyRight) Down _ _) s = movePiece 2 s
+handleEvent (EventKey (Char 'a') Down _ _) s = rotateCW s
+handleEvent (EventKey (Char 's') Down _ _) s = rotateCCW s
 handleEvent _ s = s
 
 -- Moves the falling piece horizontally, if possible
@@ -30,6 +32,19 @@ movePiece offset s
   | otherwise = s
     where
       piecePos' = (fst (piecePos s) + offset, snd (piecePos s))
+      
+-- Transforms the falling piece, if possible
+transformPiece :: (Piece -> Piece) -> State -> State
+transformPiece transform s
+  | canPieceBeAt piece' (piecePos s) (well s) = s {piece = piece'}
+  | otherwise = s
+    where
+      piece' = transform (piece s)
+
+-- Rotates the falling piece clockwise, if possible
+rotateCW :: State -> State
+rotateCW = transformPiece pieceCW -- I feel SO badass for doing this!
+rotateCCW = transformPiece pieceCCW 
 
 -- Update function passed to gloss
 updateGameState :: Float -> State -> State
@@ -53,7 +68,7 @@ canPieceBeAt piece coord well = insidePlayfield && (not colliding)
 -- Moves the current piece one cell down
 applyMove :: State -> State
 applyMove s
-  | nextPosInvalid    = fixPiece s 
+  | nextPosInvalid    = handleFullRows (fixPiece s)
   | otherwise         = s {piecePos = piecePos'}
     where
       nextPosInvalid = not (canPieceBeAt (piece s) piecePos' (well s))
@@ -74,3 +89,7 @@ fixPiece s
         reseed = randomR (0.0, 1.0) (randomSeed s)
 
 
+-- Removes filled rows and changes the score accordingly
+handleFullRows :: State -> State
+handleFullRows s = s {well = fst result, score = (score s) + snd result}
+  where result = clearAndCountFilledRows (well s)
