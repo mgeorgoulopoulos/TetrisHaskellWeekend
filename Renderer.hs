@@ -21,7 +21,6 @@ wallHeight = wellHeight + 2 * padding
 -- Colors
 wellColor = black
 wallColor = dark (dark blue)
-cellColor = magenta
 
 -- Convert from playfield coordinate to screen coordinate
 playfieldToScreen :: (Int, Int) -> (Int, Int)
@@ -30,8 +29,8 @@ playfieldToScreen (px, py) = (sx, sy) where
   sy = (11 * cellSize) + (py * cellSize) `quot` 2
 
 -- Function that renders a single cell
-renderCell :: (Int, Int) -> Picture
-renderCell (px, py) = translate (fromIntegral sx) (fromIntegral sy) (color cellColor (rectangleSolid (fromIntegral cellSize) (fromIntegral cellSize)))
+renderCell :: (Int, Int) -> Color -> Picture
+renderCell (px, py) col = translate (fromIntegral sx) (fromIntegral sy) (color col (rectangleSolid (fromIntegral cellSize) (fromIntegral cellSize)))
   where
     sx = fst transformed
     sy = snd transformed
@@ -45,7 +44,7 @@ renderWell well =
       cellToPicture (px,py,c)
         | py > (-3)  = pictures []
         | c == Empty = pictures []
-        | otherwise  = renderCell (px, py)
+        | otherwise  = renderCell (px, py) (cellColor c)
         
 
 -- Game State renderer

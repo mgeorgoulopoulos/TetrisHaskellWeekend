@@ -10,6 +10,7 @@ module Playfield
   , renderPiece
   , pieceCollides
   , clearAndCountFilledRows
+  , cellColor
   ) where
 
 import Piece
@@ -18,6 +19,11 @@ import Graphics.Gloss
 
 -- A cell is a rectangle in the playfield - it can either be full or empty
 data Cell = Empty | FilledWith Color deriving (Show, Eq)
+
+-- Returns the color of the cell, or black if empty
+cellColor :: Cell -> Color
+cellColor (FilledWith col) = col
+cellColor _ = black
 
 -- Row of cells
 data Row = RowOfCells [Cell] deriving (Show)

@@ -25,13 +25,13 @@ import Graphics.Gloss
 data Piece = PieceCoords [(Int, Int)] Color deriving (Show)
 
 -- Piece definitions
-tetrominoI = PieceCoords [(-3, -1), (-1, -1), (1, -1), (3, -1)] cyan
-tetrominoO = PieceCoords [(-1, -1), (1, -1), (-1, 1), (1, 1)] yellow
-tetrominoS = PieceCoords [(-1, -1), (1, -1), (1, 1), (3,1)] green
+tetrominoI = PieceCoords [(-3, -1), (-1, -1), (1, -1), (3, -1)] (dark cyan)
+tetrominoO = PieceCoords [(-1, -1), (1, -1), (-1, 1), (1, 1)] (dark yellow)
+tetrominoS = PieceCoords [(-1, -1), (1, -1), (1, 1), (3,1)] (dark green)
 tetrominoZ = PieceCoords [(-1, -1), (1, -1), (-3,1), (-1, 1)] red
-tetrominoT = PieceCoords [(-1, -1), (1, -1), (3,-1), (1, 1)] magenta
+tetrominoT = PieceCoords [(-1, -1), (1, -1), (3,-1), (1, 1)] (dark magenta)
 tetrominoJ = PieceCoords [(-1, -1), (1, -1), (3,-1), (-1, 1)] blue
-tetrominoL = PieceCoords [(-3,-1),(-1, -1), (1, -1), (1, 1)] orange
+tetrominoL = PieceCoords [(-3,-1),(-1, -1), (1, -1), (1, 1)] (dark orange)
 
 -- Checks if a piece contains the given coordinate
 pieceContains :: (Int, Int) -> Piece -> Bool
