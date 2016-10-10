@@ -100,5 +100,14 @@ fixPiece s
 
 -- Removes filled rows and changes the score accordingly
 handleFullRows :: State -> State
-handleFullRows s = s {well = fst result, score = (score s) + snd result}
+handleFullRows s = s {well = fst result, score = (score s) + linesToScore (snd result)}
   where result = clearAndCountFilledRows (well s)
+
+-- Finally, it can't be called "Tetris" without the scoring system
+linesToScore :: Int -> Int
+linesToScore 0 = 0
+linesToScore 1 = 40
+linesToScore 2 = 100
+linesToScore 3 = 300
+linesToScore 4 = 1200
+linesToScore _ = error "Invalid cleared Line count"
