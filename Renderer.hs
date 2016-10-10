@@ -30,10 +30,11 @@ playfieldToScreen (px, py) = (sx, sy) where
 
 -- Function that renders a single cell
 renderCell :: (Int, Int) -> Color -> Picture
-renderCell (px, py) col = translate (fromIntegral sx) (fromIntegral sy) (color col (rectangleSolid (fromIntegral cellSize) (fromIntegral cellSize)))
+renderCell (px, py) col = translate (fromIntegral sx) (fromIntegral sy) (color col (rectangleSolid sz sz))
   where
     sx = fst transformed
     sy = snd transformed
+    sz = 0.9 * (fromIntegral cellSize)
     transformed = playfieldToScreen (px, py)
   
 -- Renders Well playfield to Picture

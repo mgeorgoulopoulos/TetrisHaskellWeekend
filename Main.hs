@@ -8,7 +8,7 @@ import Logic
 import System.Random
 
 window :: Display
-window = InWindow "Nice Window" (1280, 768) (200, 200)
+window = InWindow "Tetris" (1280, 768) (200, 200)
 
 background :: Color
 background = black
